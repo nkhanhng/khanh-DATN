@@ -26,6 +26,8 @@ import Profile from './component/profile/Profile';
 import NotFound from './component/not-found/NotFound';
 import Posts from './component/posts/Posts';
 import Post from './component/post/Post';
+import UserManagement from './component/admin/UserManagement';
+import PostManagement from './component/admin/PostManagement';
 
 //Check for token
 if(localStorage.jwtToken){
@@ -83,9 +85,14 @@ class App extends Component {
                   <Switch>
                     <PrivateRoute path="/post/:id" component={Post}/>
                   </Switch>
+                  <Switch>
+                    <PrivateRoute path="/admin/users" component={UserManagement}/>
+                  </Switch>
+                  <Switch>
+                    <PrivateRoute path="/admin/posts" component={PostManagement}/>
+                  </Switch>
                   <Route path="/error" component={NotFound}/>
                 </div>
-              <Footer/>
           </div>
         </Router>
       </Provider>

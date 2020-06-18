@@ -6,7 +6,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const keys = require('../../config/keys')
 const passport = require('passport')
-
+const { checkRole, passportAuthentication } = require('../../middleware/auth')
+const isEmpty = require('../../validation/is-empty');
 //Load Input Validation
 const validateRegisterInput = require('../../validation/register')
 const validateLoginInput = require('../../validation/login')
@@ -24,7 +25,7 @@ router.get('/',(req,res)=>{
 //@access  Public
 router.post('/register',(req,res)=>{
     const {errors, isValid} = validateRegisterInput(req.body)
-
+    
     if(!isValid){
         return res.status(400).json(errors)
     }
@@ -41,12 +42,12 @@ router.post('/register',(req,res)=>{
                     r:'pg',//Rating
                     d:'mm', //Default
                 })
-
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
                     avatar,
-                    password: req.body.password
+                    password: req.body.password,
+                    role: req.body.role
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {
@@ -96,7 +97,8 @@ router.post('/login', (req,res)=>{
                             const payload = {
                                 id: user.id, 
                                 name: user.name, 
-                                avatar: user.avatar
+                                avatar: user.avatar,
+                                role: user.role
                             }
 
                             //sign token
@@ -117,7 +119,7 @@ router.post('/login', (req,res)=>{
 //@route   GET api/users/current
 //@desc    Return current user
 //@access  Private
-router.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
+router.get('/current', passportAuthentication, (req,res)=>{
     res.json({
         id: req.user.id,
         name: req.user.name,
@@ -126,5 +128,49 @@ router.get('/current',passport.authenticate('jwt',{session:false}),(req,res)=>{
     })
 })
 
+function getAllUsers() {
+    return new Promise((resolve, reject) => {
+        User.countDocuments({},(err,count)=>{
+          if(err){
+            console.log(err)
+            reject(err)
+          }
+          resolve(count)
+        })
+      });
+}
+
+router.get('/all-user', passportAuthentication ,checkRole(["admin"]), (req,res) => {
+    getAllUsers().then(count => {
+        const limit = 5;
+        let numPage = count / limit;
+        let page = req.query.page;
+        User.find({}, {password: 0})
+            .skip((5 * page)-5)
+            .limit(limit)
+            .sort({date: -1})
+            .then(user => {
+                if(isEmpty(user)){
+                    res.json({message: "No more user"})
+                } else {
+                    res.json({user, numPage: Math.ceil(numPage)});
+                }
+            })
+            .catch(err => res.json(err))
+    })
+})
+
+router.delete(
+    "/:id",
+    passportAuthentication,
+    checkRole(["admin"]),
+    (req, res) => {
+      User.findById(req.params.id)
+        .then((post) => {
+          post.remove().then(() => res.json({ success: true }));
+        })
+        .catch((err) => res.status(404).json({ error: "No user found" }));
+    }
+  );
 
 module.exports = router;

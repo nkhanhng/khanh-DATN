@@ -21,6 +21,11 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    role: {
+        type: String,
+        default: "user",
+        enum: ["user", "admin"]
+    },
 })
 
 module.exports = User = mongoose.model('users',UserSchema)

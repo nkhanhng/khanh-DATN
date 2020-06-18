@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 mongoose
   .connect(
-    "mongodb+srv://admin:admin@cluster0-ft1zd.gcp.mongodb.net/test?retryWrites=true&w=majority",
+    "mongodb://localhost/khanh",
     { useNewUrlParser: true, useUnifiedTopology: true },
   )
   .then(() => console.log("Mongodb connected"))
