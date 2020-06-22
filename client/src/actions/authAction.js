@@ -4,9 +4,9 @@ import setAuthToken from '../utils/setAuthToken'
 import jwt_decode from 'jwt-decode';
 
 // Register User
-export const registerUser = (userData, history) => dispatch => {
+export const registerUser = (userData, history, page = "/login") => dispatch => {
     axios.post('/api/users/register', userData)
-            .then(res => history.push('/login'))
+            .then(res => history.push(page))
             .catch(err => 
                 dispatch({
                     type: GET_ERRORS,
@@ -54,4 +54,8 @@ export const logoutUser = () => dispatch => {
     setAuthToken(false);
     //Set current user to {} and isAuthenticated to false
     dispatch(setCurrentUser({}))
+}
+
+export const createUser = () => dispatch => {
+
 }

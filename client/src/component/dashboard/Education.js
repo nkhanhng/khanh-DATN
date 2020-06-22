@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 // import {withRouter} from 'react-router-dom';
-// import Moment from 'react-moment';
+import Moment from 'react-moment';
 import { deleteEducation } from '../../actions/profileAction'
 
 class Education extends Component {
@@ -15,8 +15,8 @@ class Education extends Component {
             <tr key={edu._id}>
                 <td>{edu.school}</td>
                 <td>{edu.degree}</td>
-                {/* <td><Moment format="YYYY/MM/DD">{edu.from}</Moment>-
-                {edu.to == null ? "Now" : <Moment format="YYYY/MM/DD">{edu.to}</Moment>}</td> */}
+                <td><Moment format="YYYY/MM/DD">{edu.from}</Moment>-
+                {edu.to == null ? "Now" : <Moment format="YYYY/MM/DD">{edu.to}</Moment>}</td>
                 <td><button onClick={this.onDeleteClick} className="btn btn-danger">Delete</button></td>
             </tr>
         ))

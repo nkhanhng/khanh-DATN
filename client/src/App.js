@@ -28,6 +28,7 @@ import Posts from './component/posts/Posts';
 import Post from './component/post/Post';
 import UserManagement from './component/admin/UserManagement';
 import PostManagement from './component/admin/PostManagement';
+import CreateUserAdmin from './component/admin/CreateUserAdmin';
 
 //Check for token
 if(localStorage.jwtToken){
@@ -90,6 +91,9 @@ class App extends Component {
                   </Switch>
                   <Switch>
                     <PrivateRoute path="/admin/posts" component={PostManagement}/>
+                  </Switch>
+                  <Switch>
+                    <PrivateRoute path="/admin/create-user" component={CreateUserAdmin}/>
                   </Switch>
                   <Route path="/error" component={NotFound}/>
                 </div>

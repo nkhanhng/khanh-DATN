@@ -11,6 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 import axios from 'axios';
 import { Button } from "@material-ui/core";
 import Spinner from '../common/Spinner';
+import { Link } from "react-router-dom";
 
 const columns = [
   { id: "_id", label: "ID", minWidth: 170 },
@@ -88,6 +89,11 @@ export default function UserManagement() {
 
   return (
     <Paper className={classes.root}>
+      <Link to="/admin/create-user">
+        <Button variant="contained" color="primary">
+          Add user
+        </Button>
+      </Link>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

@@ -36,6 +36,13 @@ class Dashboard extends Component {
                         </Link>
                         </p>
                         <ProfileActions/>
+                        <h3>Your Profile</h3>
+                        <div>
+                            <div>Company: {profile.company}</div>
+                            <div>City: {profile.location}</div>
+                            <div>Current job: {profile.status}</div>
+                            <div>Bio: {profile.bio}</div>
+                        </div>
                         <Experience experience={profile.experience}/>
                         <Education education={profile.education}/>
                         <div style={{marginBottom: '60px'}}>

@@ -21,6 +21,12 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    followings: [{
+        user:{
+          type: Schema.Types.ObjectId,
+          ref: "User"
+        }
+    }],
     role: {
         type: String,
         default: "user",
