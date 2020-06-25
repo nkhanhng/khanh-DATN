@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Spinner from '../common/Spinner';
 import {getProfiles} from '../../actions/profileAction';
 import ProfileItem from './ProfileItem'
+import { Link } from 'react-router-dom';
 
 class Profiles extends Component {
     componentDidMount(){
@@ -35,6 +36,7 @@ class Profiles extends Component {
                             <p className='lead text-center'>
                                 Browse and connect with other people
                             </p>
+                            <Link to="/search-profile" className="btn btn-info mb-3">Search Profile</Link>
                             {profileItems}
                         </div>
                     </div>

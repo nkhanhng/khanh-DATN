@@ -29,6 +29,7 @@ import Post from './component/post/Post';
 import UserManagement from './component/admin/UserManagement';
 import PostManagement from './component/admin/PostManagement';
 import CreateUserAdmin from './component/admin/CreateUserAdmin';
+import SearchProfile from './component/profiles/SearchProfile';
 
 //Check for token
 if(localStorage.jwtToken){
@@ -65,6 +66,7 @@ class App extends Component {
                   <Route path="/register" component={Register}/>
                   <Route path="/profiles" component={Profiles}/>
                   <Route path="/profile/:handle" component={Profile}/>
+                  <Route path="/search-profile" component={SearchProfile}/>
                   <Switch>
                     <PrivateRoute exact path="/dashboard" component={DashBoard}/>
                   </Switch>

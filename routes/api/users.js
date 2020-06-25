@@ -164,7 +164,7 @@ router.get(
     });
   }
 );
-var ObjectId = require('mongoose').Types.ObjectId; 
+
 router.delete(
   "/:id",
   passportAuthentication,
@@ -178,5 +178,24 @@ router.delete(
         })
   }
 );
+
+router.put("/follow/:id",passportAuthentication,(req,res)=>{
+  User.followUser(req.params.id,req.user.id)
+    .then(data => res.json({success: true, data}))
+    .catch(err => res.status(500).json(err))
+})
+
+router.put("/unfollow/:id",passportAuthentication,(req,res)=>{
+  User.unfollowUser(req.params.id,req.user.id)
+    .then(data => res.json({success: true, data}))
+    .catch(err => res.status(500).json(err))
+})
+
+router.post("/search", (req,res) => {
+  console.log(req.body.name)
+  User.find({ name: req.body.name })
+      .then(data => res.json(data))
+      .catch(err => res.status(404).json(err))
+})
 
 module.exports = router;

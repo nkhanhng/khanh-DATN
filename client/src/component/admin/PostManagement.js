@@ -30,12 +30,6 @@ const columns = [
     format: (value) => moment.format(value),
   },
   {
-    id: "edit",
-    label: "Edit",
-    minWidth: 80,
-    align: "center",
-  },
-  {
     id: "Edit",
     label: "Delete",
     align: "center",
@@ -118,9 +112,6 @@ export default function PostManagement() {
                     <TableCell>{post.text}</TableCell>
                     <TableCell align="center">{post.comments.length}</TableCell>
                     <TableCell>{post.date}</TableCell>
-                    <TableCell>
-                      <Button>Edit</Button>
-                    </TableCell>
                     <TableCell>
                       <Button
                         onClick={() => {
