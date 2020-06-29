@@ -29,7 +29,7 @@ class Profile extends Component {
         const {profile, loading} = this.props.profile;
         let profileContent;
 
-        if(profile === null || loading){
+        if(!profile || loading){
             profileContent = <Spinner/>
         } else {
             profileContent = (
@@ -54,7 +54,7 @@ class Profile extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
-                            {profileContent}
+                            {profile ? profileContent : <Spinner/>}
                         </div>
                     </div>
                 </div>

@@ -11,12 +11,14 @@ const ProfileHeader = (props) => {
   const [loading, setLoading] = useState(false);
 
   const currentUser = useSelector(state => state.auth);
+  console.log(currentUser);
 
   useEffect(() => {
     const user = { profile }
     console.log(user.profile.user.followings)
     if(user.profile.user.followings.length > 0){
-      if(user.profile.user.followings.some(flw => flw.user === currentUser._id)){
+      if(user.profile.user.followings.some(flw => flw.user === currentUser.user.id)){
+        console.log('true')
         setIsFollow(true);
       }
     }
@@ -60,12 +62,12 @@ const ProfileHeader = (props) => {
               <img
                 className="rounded-circle"
                 alt="Avatar"
-                src={profile.user.avatar ? profile.user.avatar : avatar}
+                src={profile.user && profile.user.avatar ? profile.user.avatar : avatar}
               />
             </div>
           </div>
           <div className="text-center">
-            <h1 className="display-4 text-center">{profile.user.name}</h1>
+            <h1 className="display-4 text-center">{profile.user ? profile.user.name : null}</h1>
             <p className="lead text-center">
               {profile.status}{" "}
               {isEmpty(profile.company) ? null : (
@@ -82,7 +84,6 @@ const ProfileHeader = (props) => {
               :
                 <span onClick={() => handleFollow(profile.user._id)} className="btn btn-lg btn-success">Follow</span>
               }
-              {alert}
               <p>
                 {isEmpty(profile.website) ? null : (
                   <a
