@@ -66,6 +66,7 @@ class App extends Component {
                   <Route path="/register" component={Register}/>
                   <Route path="/profiles" component={Profiles}/>
                   <Route path="/profile/:handle" component={Profile}/>
+                  <Route path="/user/:id" component={Profile}/>
                   <Route path="/search-profile" component={SearchProfile}/>
                   <Switch>
                     <PrivateRoute exact path="/dashboard" component={DashBoard}/>

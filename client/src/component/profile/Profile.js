@@ -3,7 +3,7 @@ import Spinner from '../common/Spinner';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import { getProfileByHandle } from '../../actions/profileAction';
+import { getProfileByHandle, getProfileById } from '../../actions/profileAction';
 import ProfileHeader from './ProfileHeader';
 import ProfileAbout from './ProfileAbout';
 import ProfileCreds from './ProfileCreds';
@@ -13,6 +13,9 @@ class Profile extends Component {
     componentDidMount(){
         if(this.props.match.params.handle){
             this.props.getProfileByHandle(this.props.match.params.handle)
+        }
+        if(this.props.match.params.id){
+            this.props.getProfileById(this.props.match.params.id)
         }
     }
 
@@ -38,7 +41,7 @@ class Profile extends Component {
                             </Link>
                         </div>
                     </div>
-                    <ProfileHeader profile={profile}/>
+                    <ProfileHeader profile={profile} history={this.props.history}/>
                     <ProfileAbout profile={profile}/>
                     <ProfileCreds education={profile.education} experience={profile.experience}/>
                     {profile.githubusername ? (<ProfileGithub username={profile.githubusername}/>): null}
@@ -62,6 +65,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
     getProfileByHandle: PropTypes.func.isRequired,
+    getProfileById: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired
 }
 
@@ -69,4 +73,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 })
 
-export default connect(mapStateToProps,{getProfileByHandle})(Profile);
+export default connect(mapStateToProps,{getProfileByHandle, getProfileById})(Profile);

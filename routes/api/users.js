@@ -141,14 +141,17 @@ function getAllUsers() {
 }
 
 router.get(
-  "/all-user",
+  "/all-user/:page",
   passportAuthentication,
   checkRole(["admin"]),
   (req, res) => {
+    console.log(req.query)
+
     getAllUsers().then((count) => {
       const limit = 5;
       let numPage = count / limit;
-      let page = req.query.page;
+      let page = req.params.page || 1;
+      console.log(req.params.page)
       User.find({}, { password: 0 })
         .skip(5 * page - 5)
         .limit(limit)
@@ -157,7 +160,7 @@ router.get(
           if (isEmpty(user)) {
             res.json({ message: "No more user" });
           } else {
-            res.json({ user, numPage: Math.ceil(numPage) });
+            res.json({ user, numPage: Math.ceil(numPage), count, currentPage: page });
           }
         })
         .catch((err) => res.json(err));

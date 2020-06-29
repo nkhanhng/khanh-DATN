@@ -47,30 +47,31 @@ const useStyles = makeStyles({
 
 export default function UserManagement() {
   const classes = useStyles();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [users, setUsers] = useState([]);
-  const [numPage, setNumPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     axios
-      .get("/api/users/all-user")
+      .get(`/api/users/all-user/${currentPage + 1}`)
       .then((res) => {
         const { data } = res;
         setUsers(data.user);
-        setNumPage(data.numPage);
+        setTotal(data.count);
+        // setNumPage(data.numPage);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [loading]);
+  }, [loading, currentPage]);
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    setCurrentPage(newPage)
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(event.target.value);
-    setPage(0);
+    setCurrentPage(0);
   };
 
   const handleDelete = (id) => {
@@ -107,7 +108,6 @@ export default function UserManagement() {
             {users 
             ?
             users
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((user) => {
                 return (
                   <React.Fragment>
@@ -133,12 +133,11 @@ export default function UserManagement() {
       </TableContainer>
       <TablePagination
         component="div"
-        count={users.length}
+        count={total}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[]}
-        page={page}
+        page={currentPage}
         onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
       />
     </Paper>
   );

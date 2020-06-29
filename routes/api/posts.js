@@ -25,14 +25,14 @@ function getAllPosts() {
 }
 
 router.get(
-  "/all-posts",
+  "/all-posts/:page",
   passportAuthentication,
   checkRole(["admin"]),
   (req, res) => {
     getAllPosts().then(count => {
         const limit = 5;
         let numPage = count / limit;
-        let page = req.query.page;
+        let page = req.params.page || 1;
         Post.find()
             .populate("user", "name avatar")
             .skip((5 * page)-5)
@@ -43,7 +43,7 @@ router.get(
                     res.json({message: "No more post"})
                 } else {
                     console.log("test")
-                    res.json({post, numPage: Math.ceil(numPage)});
+                    res.json({post, numPage: Math.ceil(numPage), currentPage: page, count});
                 }
             })
             .catch(err => res.json(err))

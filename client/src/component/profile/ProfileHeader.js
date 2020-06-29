@@ -2,19 +2,21 @@ import React, { useState, useEffect } from "react";
 import isEmpty from "../../validation/is-empty";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import avatar from '../../img/defaultava.png'
 
 const ProfileHeader = (props) => {
-  const { profile } = props;
+  const { profile, history } = props;
+  console.log(history)
   const [isFollow, setIsFollow] = useState(false)
   const [loading, setLoading] = useState(false);
 
-  const currentUser = useSelector(state => state.auth.user.id);
+  const currentUser = useSelector(state => state.auth);
 
   useEffect(() => {
     const user = { profile }
     console.log(user.profile.user.followings)
     if(user.profile.user.followings.length > 0){
-      if(user.profile.user.followings.some(flw => flw.user === currentUser)){
+      if(user.profile.user.followings.some(flw => flw.user === currentUser._id)){
         setIsFollow(true);
       }
     }
@@ -34,6 +36,9 @@ const ProfileHeader = (props) => {
   }
 
   const handleFollow = (id) => {
+    if (!currentUser.isAuthenticated) {
+      history.push('/login');
+    }
     setLoading(true)
     axios
       .put(`/api/users/follow/${id}`)
@@ -55,7 +60,7 @@ const ProfileHeader = (props) => {
               <img
                 className="rounded-circle"
                 alt="Avatar"
-                src={profile.user.avatar}
+                src={profile.user.avatar ? profile.user.avatar : avatar}
               />
             </div>
           </div>
@@ -77,6 +82,7 @@ const ProfileHeader = (props) => {
               :
                 <span onClick={() => handleFollow(profile.user._id)} className="btn btn-lg btn-success">Follow</span>
               }
+              {alert}
               <p>
                 {isEmpty(profile.website) ? null : (
                   <a

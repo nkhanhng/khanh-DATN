@@ -70,7 +70,7 @@ router.get('/user/:user_id', (req,res) => {
     const errors = {}
     Profile
         .findOne({ user: req.params.user_id })
-        .populate('user', "name avatar")
+        .populate('user', "name avatar followings")
         .then(profile => {
             if(!profile){
                 errors.nopfrofile = 'There is no profile for this user'

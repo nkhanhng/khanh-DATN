@@ -49,29 +49,24 @@ const useStyles = makeStyles({
 export default function PostManagement() {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [posts, setPosts] = useState([]);
-  const [numPage, setNumPage] = useState(1);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     axios
-      .get("/api/posts/all-posts")
+      .get(`/api/posts/all-posts/${page + 1}`)
       .then((res) => {
         const { data } = res;
         setPosts(data.post);
-        setNumPage(data.numPage);
+        setTotal(data.count);
         setLoading(false)
       })
       .catch((err) => console.log(err));
-  }, [loading]);
+  }, [loading, page]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
   };
 
   const handleDelete = (id) => {
@@ -103,7 +98,6 @@ export default function PostManagement() {
             {posts
             ?
             posts
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((post) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={post._id}>
@@ -133,12 +127,11 @@ export default function PostManagement() {
       {posts
       ?  <TablePagination
           component="div"
-          count={posts.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           rowsPerPageOptions={[]}
           page={page}
           onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       : null
       }

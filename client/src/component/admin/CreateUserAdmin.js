@@ -10,6 +10,7 @@ const CreateUserAdmin = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [password2, setPassword2] = useState('')
+    const [role, setRole] = useState('user')
     const [errors, setErrors] = useState({})
     const onSubmit = (e) => {
         e.preventDefault();
@@ -17,7 +18,8 @@ const CreateUserAdmin = (props) => {
             name,
             email,
             password,
-            password2
+            password2,
+            role
         }
         // console.log(props)
         dispatch(registerUser(newUser, props.history, '/admin/users'))
@@ -65,7 +67,11 @@ const CreateUserAdmin = (props) => {
                     onChange={(e) => setPassword2(e.target.value)}
                     error={errors.password2}
                 />
-
+                <select class="custom-select" name="role" onChange={(e) => setRole(e.target.value)}>
+                    <option selected>Select role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
                 <button type="submit" className="btn btn-info btn-block mt-4">
                     Submit
                 </button>

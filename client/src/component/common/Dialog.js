@@ -8,8 +8,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from 'prop-types';
 
 const AlertDialog = (props) => {
-    const { action ,handleClose, text, open, id } = props;
-
+    const { handleClose, text, open, id } = props;
+    
     return (
         <div>
         <Dialog
@@ -25,10 +25,7 @@ const AlertDialog = (props) => {
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose} color="primary">
-                Cancle
-            </Button>
-            <Button onClick={() => action(id)} color="primary" autoFocus>
-                Agree
+                Cancel
             </Button>
             </DialogActions>
         </Dialog>
