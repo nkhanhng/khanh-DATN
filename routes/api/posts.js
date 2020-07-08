@@ -268,4 +268,16 @@ router.delete(
   }
 );
 
+router.get("/user/:id", passport.authenticate("jwt", { session: false }),
+  (req,res) => {
+    console.log(req.params.id)
+    Post.find({user: req.params.id})
+      .then((post) => {
+        res.json(post);
+      })
+      .catch((err) => res.status(404).json({ postnotfound: "No post found" }))
+  }
+),
+  
+
 module.exports = router;

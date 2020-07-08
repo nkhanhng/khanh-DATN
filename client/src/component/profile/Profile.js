@@ -8,6 +8,8 @@ import ProfileHeader from './ProfileHeader';
 import ProfileAbout from './ProfileAbout';
 import ProfileCreds from './ProfileCreds';
 import ProfileGithub from './ProfileGithub';
+import ProfilePost from './ProfilePost';
+import Typography from '@material-ui/core/Typography';
 
 class Profile extends Component {
     componentDidMount(){
@@ -23,6 +25,24 @@ class Profile extends Component {
         if(nextProps.profile.profile === null && this.props.profile.loading){
             this.props.history.push('/error')
         }
+    }
+
+    renderPost = () => {
+        const {profile, auth} = this.props;
+        console.log(this.props.auth);
+        if(profile.profile.user.followings.length > 0){
+            if(profile.profile.user.followings.some(flw => flw.user === auth.user.id)){
+                console.log('true')
+                return (
+                    <ProfilePost profile={profile} />
+                )
+            }
+        }
+        return (
+            <Typography variant="h6">
+                You need to follow {profile.profile.user.name} to see {profile.profile.user.name}'s posts
+            </Typography>
+        )
     }
 
     render() {
@@ -45,6 +65,7 @@ class Profile extends Component {
                     <ProfileAbout profile={profile}/>
                     <ProfileCreds education={profile.education} experience={profile.experience}/>
                     {profile.githubusername ? (<ProfileGithub username={profile.githubusername}/>): null}
+                    {this.renderPost()}
                 </div>
             )
         }
@@ -70,7 +91,8 @@ Profile.propTypes = {
 }
 
 const mapStateToProps = state => ({
-    profile: state.profile
+    profile: state.profile,
+    auth: state.auth
 })
 
 export default connect(mapStateToProps,{getProfileByHandle, getProfileById})(Profile);

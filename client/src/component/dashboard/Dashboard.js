@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import ProfileActions from './ProfileActions'
 import Experience from './Experience'
 import Education from './Education';
+import Typography from '@material-ui/core/Typography';
 
 class Dashboard extends Component {
     componentDidMount(){
@@ -38,10 +39,10 @@ class Dashboard extends Component {
                         <ProfileActions/>
                         <h3>Your Profile</h3>
                         <div>
-                            <div>Company: {profile.company}</div>
-                            <div>City: {profile.location}</div>
-                            <div>Current job: {profile.status}</div>
-                            <div>Bio: {profile.bio}</div>
+                            <Typography variant="h6"><span className="font-weight-bold">Company:</span> {profile.company}</Typography>
+                            <Typography variant="h6"><span className="font-weight-bold">City:</span> {profile.location}</Typography>
+                            <Typography variant="h6"><span className="font-weight-bold">Current job:</span> {profile.status}</Typography>
+                            <Typography variant="h6"><span className="font-weight-bold">Bio:</span> {profile.bio}</Typography>
                         </div>
                         <Experience experience={profile.experience}/>
                         <Education education={profile.education}/>
