@@ -68,11 +68,19 @@ router.delete(
 //@desc    get all posts
 //@access  Public
 
-router.get("/", (req, res) => {
-  Post.find()
-    .sort({ date: -1 })
-    .then((posts) => res.json(posts))
-    .catch((err) => res.status(404).json({ nopostfound: "No posts found" }));
+router.get("/:page", (req, res) => {
+  getAllPosts().then(count => {
+    const limit = 5;
+    let numPage = count / limit;
+    let page = req.params.page || 1;
+    Post.find()
+      .sort({ date: -1 })
+      .populate("user", "name avatar")
+      .skip((5 * page)-5)
+      .limit(limit)
+      .then((posts) => res.json({posts, numPage: Math.ceil(numPage)}))
+      .catch((err) => res.status(404).json({ nopostfound: "No posts found" }));
+  })
 });
 
 //@route   GET api/posts/:id
@@ -82,6 +90,8 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   Post.findById(req.params.id)
     .sort({ date: -1 })
+    .estimatedDocumentCount()
+    .then(count => console.log(count))
     .then((posts) => res.json(posts))
     .catch((err) => res.status(404).json({ nopostfound: "No post found" }));
 });

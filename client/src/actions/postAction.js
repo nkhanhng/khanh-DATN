@@ -24,12 +24,12 @@ export const addPost = postData => dispatch => {
 }
 
 //Get posts
-export const getPosts = () => dispatch => {
+export const getPosts = (page = 1) => dispatch => {
     dispatch(setPostLoading())
-    axios.get('/api/posts')
+    axios.get(`/api/posts/${page}`)
          .then(res => dispatch({
              type: GET_POSTS,
-             payload: res.data
+             payload: { posts: res.data.posts, numPage: res.data.numPage}
          }))
          .catch(err => dispatch({
              type: GET_POSTS,
